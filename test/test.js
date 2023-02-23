@@ -1,21 +1,17 @@
 import {deviationChecker, requestUrl, avg} from './helper';
 import superagent from 'superagent';
+import config from "../env/config";
+
+const {baseDiceMax, baseDiceMin} = config;
 
 describe('Dices distribution', () => {
-    const rollsNum = process.env.ROLLS_NUM || 10000;
-    it('1 dice distribution', async () => {
-        let min = 1;
-        let max = 6;
-        console.log(`Roll with parameters: number of rolls [${rollsNum}], count of dices [1]`);
-        const res = await superagent.get(requestUrl(rollsNum, min, max));
-        const resArray = res.text.split(`\n`).filter(Boolean);
-        deviationChecker(resArray, avg(rollsNum, min, max));
-    });
+    const rollsNum = process.env.ROLLS_NUM || 10;
+    const min = process.env.MIN || baseDiceMin;
+    const max = process.env.MAX || baseDiceMax``;
 
-    it('2 dices distribution', async () => {
-        let min = 2;
-        let max = 12;
-        console.log(`Roll with parameters: number of rolls [${rollsNum}], count of dices [2]`);
+    it(`${min} dice distribution`, async () => {
+        console.log(`Roll with parameters: number of rolls [${rollsNum}], count of dices [${min}]`);
+
         const res = await superagent.get(requestUrl(rollsNum, min, max));
         const resArray = res.text.split(`\n`).filter(Boolean);
         deviationChecker(resArray, avg(rollsNum, min, max));
